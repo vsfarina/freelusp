@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Aluno, Empresa
+from .models import User, Aluno, Empresa, Servico
 
 class AlunoSignUpForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -43,3 +43,8 @@ class EmpresaProfileForm(forms.ModelForm):
     class Meta:
         model = Empresa
         fields = ['nome_completo', 'telefone', 'cpf_cnpj', 'foto_perfil']
+
+class ServicoForm(forms.ModelForm):
+    class Meta:
+        model = Servico
+        fields = ['titulo', 'descricao', 'preco', 'prazo']
