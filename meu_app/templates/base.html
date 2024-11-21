@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +8,10 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{% url 'home' %}">Home</a></li>
-            <li><a href="{% url 'login' %}">Login</a></li>
-            <li><a href="{% url 'aluno_signup' %}">Cadastro de Alunos</a></li>
-            <li><a href="{% url 'empresa_signup' %}">Cadastro de Empresas</a></li>
-        </ul>
-    </nav>
+    <header>
+        <img src="https://i.imgur.com/vH4L5mh.jpeg" alt="Logo do Site" class="logo">
+        <h1>FREELUSP</h1>
+    </header>
     <div>
         {% block content %}
         {% endblock content %}

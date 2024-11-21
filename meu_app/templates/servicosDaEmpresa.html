@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}Serviços Disponíveis{% endblock %}
+{% block title %}Serviços da minha empresa: {% endblock %}
 
 {% block content %}
-    <h2>Serviços Disponíveis</h2>
+    <h2>Serviços da minha empresa: </h2>
     <ul>
         {% for servico in servicos %}
         <li>
@@ -16,4 +16,7 @@
         <p>Nenhum serviço disponível no momento.</p>
         {% endfor %}
     </ul>
-{% endblock%}
+
+    <a href="{% url 'criar_servico' %}">Criar novo serviço</a>
+
+{% endblock %}

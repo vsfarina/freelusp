@@ -3,9 +3,20 @@
 {% block title %}Bem-vindo ao Meu Site{% endblock %}
 
 {% block content %}
-    <h1>Bem-vindo ao FREELUSP</h1>
-    <p>Este é um site criado para ajudar os usuários a se conectarem e compartilharem informações. Aqui você pode fazer login ou se cadastrar para começar a utilizar nossos serviços.</p>
-    <p>Para Estudantes: Encontre oportunidades de freelancer que se encaixam perfeitamente na sua rotina universitária. Ganhe experiência, desenvolva suas habilidades e aumente sua renda enquanto estuda. Aqui, você pode explorar uma variedade de projetos em diferentes áreas, desde redação e design até programação e marketing digital.</p>
-    <p>Para Empresas: Conecte-se com talentos universitários prontos para contribuir com suas habilidades e criatividade. Publique suas necessidades de serviços e encontre o freelancer ideal para o seu projeto. Aproveite a energia e inovação dos estudantes para impulsionar seus negócios.</p>
-    <p>Junte-se a nós e faça parte de uma comunidade que valoriza o aprendizado e a colaboração.</p>
-{% endblock content %}
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'aluno_signup' %}">Cadastro de Alunos</a></li>
+            <li><a href="{% url 'empresa_signup' %}">Cadastro de Empresas</a></li>
+        </ul>
+    </nav>
+    
+        <h1>Bem-vindo ao FREELUSP</h1>
+        <p>Este é um site criado para ajudar os usuários a se conectarem e compartilharem informações. Aqui você pode fazer login ou se cadastrar para começar a utilizar nossos serviços.</p>
+        <p>Para Estudantes: Encontre oportunidades de freelancer que se encaixam perfeitamente na sua rotina universitária. Ganhe experiência, desenvolva suas habilidades e aumente sua renda enquanto estuda. Aqui, você pode explorar uma variedade de projetos em diferentes áreas, desde redação e design até programação e marketing digital.</p>
+        <p>Para Empresas: Conecte-se com talentos universitários prontos para contribuir com suas habilidades e criatividade. Publique suas necessidades de serviços e encontre o freelancer ideal para o seu projeto. Aproveite a energia e inovação dos estudantes para impulsionar seus negócios.</p>
+        <p>Junte-se a nós e faça parte de uma comunidade que valoriza o aprendizado e a colaboração.</p>
+    {% endblock content %}    
+</body>

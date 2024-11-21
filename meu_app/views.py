@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import AlunoSignUpForm, EmpresaSignUpForm, AlunoProfileForm, EmpresaProfileForm, ServicoForm
-from .models import Servico
+from .models import Servico, Empresa
 
 def home(request):
     return render(request, 'home.html')
@@ -56,7 +56,7 @@ def criar_servico(request):
             servico = form.save(commit=False)
             servico.empresa = request.user.empresa 
             servico.save()
-            return redirect('servicos')
+            return redirect('servicosDaEmpresa')
     else:
         form = ServicoForm()
     return render(request, 'meu_app/criar_servico.html', {'form': form})
@@ -69,7 +69,16 @@ def listar_servicos(request):
 @login_required
 def profile_redirect(request):
     if request.user.is_company:
-        return redirect('criar_servico')
+        return redirect('servicosDaEmpresa')
     elif request.user.is_student:
         return redirect('servicos')
     return redirect('home')
+
+def servicosDaEmpresa(request):
+    if request.user.is_authenticated and request.user.is_company:
+        empresa = Empresa.objects.get(user=request.user) 
+        servicos = Servico.objects.filter(empresa=empresa)
+    else:
+        servicos = Servico.objects.none() 
+
+    return render(request, 'servicosDaEmpresa.html', {'servicos': servicos})

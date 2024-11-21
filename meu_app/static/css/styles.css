@@ -5,6 +5,22 @@ body {
     background-color: #f4f4f4;
 }
 
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #45489e;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+}
+
 nav {
     background-color: #333;
     color: #fff;
@@ -34,8 +50,8 @@ h1, h2, p {
 
 p {
     font-size: 1.2em; /* Aumenta o tamanho da fonte dos parágrafos */
-    margin-left: 350px; /* Adiciona margem à esquerda */
-    margin-right: 350px; /* Adiciona margem à direita */
+    margin-left: 35px; /* Adiciona margem à esquerda */
+    margin-right: 35px; /* Adiciona margem à direita */
 }
 
 button {
