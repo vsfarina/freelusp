@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block content %}
+    <h2>Escolha o tipo de cadastro</h2>
+    <a href="{% url 'aluno_signup' %}"><button>Cadastro de Alunos</button></a>
+    <a href="{% url 'empresa_signup' %}"><button>Cadastro de Empresas</button></a>
+{% endblock content %}
