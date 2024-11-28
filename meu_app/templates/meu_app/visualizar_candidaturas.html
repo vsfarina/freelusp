@@ -3,6 +3,12 @@
 {% block title %}Candidaturas para o serviço: {{ servico.titulo }}{% endblock %}
 
 {% block content %}
+<nav>
+    <ul>
+        <li><a href="{% url 'servicosDaEmpresa' %}">Home</a></li>
+        <li><a href="{% url 'criar_servico' %}">Criar novo serviço</a></li>
+    </ul>
+</nav>
     <h2>Candidaturas para o serviço: {{ servico.titulo }}</h2>
     <ul>
         {% for candidatura in candidaturas %}

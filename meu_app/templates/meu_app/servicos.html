@@ -5,7 +5,7 @@
 {% block content %}
 <nav>
     <ul>
-        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'servicos' %}">Home</a></li>
     </ul>
 </nav>
 
@@ -28,6 +28,7 @@
 <ul>
     {% for servico_info in servicos_info %}
         <h3>{{ servico_info.servico.titulo }}</h3>
+        <p><strong>Descrição:</strong></p>
         <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
         <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
         <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
