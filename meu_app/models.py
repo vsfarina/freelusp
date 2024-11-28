@@ -1,6 +1,8 @@
 from django.db import models
 from django import forms
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from datetime import date
 
 class User(AbstractUser):
     is_student = models.BooleanField(default=False)

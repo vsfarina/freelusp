@@ -3,26 +3,45 @@
 {% block title %}Serviços Disponíveis{% endblock %}
 
 {% block content %}
-    <h2>Serviços Disponíveis</h2>
+<nav>
     <ul>
-        {% for servico_info in servicos_info %}
-        <li>
-            <h3>{{ servico_info.servico.titulo }}</h3>
-            <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
-            <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
-            <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
-            {% if servico_info.ja_candidatado %}
-                <button disabled>Candidatura Feita</button>
-            {% else %}
-                <form action="{% url 'candidatar_servico' servico_info.servico.id %}" method="post">
-                    {% csrf_token %}
-                    <textarea name="mensagem" placeholder="Mensagem opcional"></textarea>
-                    <button type="submit">Candidatar-se</button>
-                </form>
-            {% endif %}
-        </li>
-        {% empty %}
-        <p>Nenhum serviço disponível no momento.</p>
-        {% endfor %}
+        <li><a href="{% url 'home' %}">Home</a></li>
     </ul>
+</nav>
+
+<div class="filter-container">
+    <h2>Pesquisa e filtragem de serviços</h2>
+    <form method="get" action="{% url 'servicos' %}">
+        <input type="text" name="q" placeholder="Buscar por título ou descrição" value="{{ request.GET.q }}">
+        <input type="number" name="preco_min" placeholder="Preço mínimo" value="{{ request.GET.preco_min }}">
+        <input type="number" name="preco_max" placeholder="Preço máximo" value="{{ request.GET.preco_max }}">
+        <input type="date" name="prazo_max" placeholder="Prazo máximo" value="{{ request.GET.prazo_max }}">
+        <button type="submit">Buscar</button>
+    </form>
+    <form action="{% url 'servicos' %}">
+        <button type="submit" class="clear-filters-button">Limpar Filtros</button>
+    </form>
+</div>
+
+<h2>Serviços Disponíveis</h2>
+
+<ul>
+    {% for servico_info in servicos_info %}
+        <h3>{{ servico_info.servico.titulo }}</h3>
+        <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
+        <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
+        <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
+        {% if servico_info.ja_candidatado %}
+            <button disabled>Candidatura Feita</button>
+        {% else %}
+            <form action="{% url 'candidatar_servico' servico_info.servico.id %}" method="post">
+                {% csrf_token %}
+                <textarea name="mensagem" placeholder="Mensagem opcional"></textarea>
+                <button type="submit">Candidatar-se</button>
+            </form>
+        {% endif %}
+    {% empty %}
+    <p>Nenhum serviço disponível no momento.</p>
+    {% endfor %}
+</ul>
 {% endblock %}

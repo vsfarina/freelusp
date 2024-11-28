@@ -7,6 +7,23 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        {% if form.errors %}
+        {% endif %}
         <button type="submit">Salvar</button>
     </form>
 {% endblock content %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const dateInputs = document.querySelectorAll('input[type="date"]');
+        dateInputs.forEach(function(dateInput) {
+            dateInput.addEventListener('input', function(e) {
+                const value = dateInput.value;
+                if (value) {
+                    const [year, month, day] = value.split('-');
+                    dateInput.value = `${day}/${month}/${year}`;
+                }
+            });
+        });
+    });
+</script>

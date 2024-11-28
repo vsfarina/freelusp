@@ -4,12 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Meu Site{% endblock %}</title>
-    {% load static %}  <!-- Carregar a tag static -->
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
     <header>
-        <img src="https://i.imgur.com/vH4L5mh.jpeg" alt="Logo do Site" class="logo">
+        <a href="{% url 'home' %}">
+            <img src="https://i.imgur.com/vH4L5mh.jpeg" alt="Logo do Site" class="logo">
+        </a>
         <h1>FREELUSP</h1>
     </header>
     <div>

@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AlunoSignUpForm, EmpresaSignUpForm, AlunoProfileForm, EmpresaProfileForm, ServicoForm
 from .models import Servico, Empresa, Aluno, Candidatura
 from django.utils import timezone
-
+from django.db.models import Q
 
 def home(request):
     return render(request, 'home.html')
@@ -44,13 +44,33 @@ def empresa_signup(request):
         profile_form = EmpresaProfileForm()
     return render(request, 'empresa_signup.html', {'user_form': user_form, 'profile_form': profile_form})
 
-
 @login_required
 def servicos(request):
     if not request.user.is_student:
         return redirect('home')
 
+    query = request.GET.get('q')
+    preco_min = request.GET.get('preco_min')
+    preco_max = request.GET.get('preco_max')
+    prazo_max = request.GET.get('prazo_max')
+
     servicos = Servico.objects.all()
+
+    if query:
+        servicos = servicos.filter(
+            Q(titulo__icontains=query) |
+            Q(descricao__icontains=query)
+        )
+
+    if preco_min:
+        servicos = servicos.filter(preco__gte=preco_min)
+
+    if preco_max:
+        servicos = servicos.filter(preco__lte=preco_max)
+
+    if prazo_max:
+        servicos = servicos.filter(prazo__gte=prazo_max)
+
     user = request.user
     servicos_info = []
     for servico in servicos:
@@ -61,7 +81,6 @@ def servicos(request):
         })
 
     return render(request, 'meu_app/servicos.html', {'servicos_info': servicos_info})
-
 
 @login_required
 def criar_servico(request):
@@ -78,10 +97,18 @@ def criar_servico(request):
         form = ServicoForm()
     return render(request, 'meu_app/criar_servico.html', {'form': form})
 
-
 def listar_servicos(request):
-    servicos = Servico.objects.all()
-    return render(request, 'meu_app/servicos.html', {'servicos': servicos})
+    if not request.user.is_company:
+        return redirect('home')
+    empresa = request.user.empresa
+    servicos = Servico.objects.filter(empresa=empresa)
+    return render(request, 'meu_app/servicosDaEmpresa.html', {'servicos': servicos})
+
+@login_required
+def excluir_servico(request, servico_id):
+    servico = get_object_or_404(Servico, id=servico_id, empresa__user=request.user)
+    servico.delete()
+    return redirect('servicosDaEmpresa')
 
 
 @login_required
