@@ -25,11 +25,15 @@
 
 <h2>Serviços Disponíveis</h2>
 
-<ul>
+<body>
+    
     {% for servico_info in servicos_info %}
+    <div class="servicos-container">
+
         <h3>{{ servico_info.servico.titulo }}</h3>
         <p><strong>Descrição:</strong></p>
         <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
+        <br>
         <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
         <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
         {% if servico_info.ja_candidatado %}
@@ -41,8 +45,9 @@
                 <button type="submit">Candidatar-se</button>
             </form>
         {% endif %}
+    </div>
     {% empty %}
     <p>Nenhum serviço disponível no momento.</p>
     {% endfor %}
-</ul>
+</body>
 {% endblock %}

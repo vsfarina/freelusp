@@ -98,3 +98,32 @@ button:hover {
 .clear-filters-button:hover {
     background-color: #d32f2f; /* cor do botão ao passar o mouse */
 }
+
+.candidato-bloco {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 30px 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+.candidato-bloco strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.servicos-container {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 20px 30px 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+
+}

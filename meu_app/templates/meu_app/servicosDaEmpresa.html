@@ -10,18 +10,23 @@
     </ul>
 </nav>
 
-<h2>Serviços da minha empresa:</h2>
+<h2>Serviços da minha empresa:
+
+</h2>
 <ul>
     {% for servico in servicos %}
+    <li class="candidato-bloco">
         <h2>{{ servico.titulo }}</h2>
         <p><strong>Descrição:</strong> {{ servico.descricao }}</p>
         <p><strong>Prazo:</strong> {{ servico.prazo }}</p>
         <p><strong>Preço:</strong> R$ {{ servico.preco }}</p>
+
         <a href="{% url 'visualizar_candidaturas' servico.id %}">Ver candidaturas</a>
         <form action="{% url 'excluir_servico' servico.id %}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este serviço?');">
             {% csrf_token %}
             <button type="submit" style="background:none; border:none; color:red; cursor:pointer;">Excluir</button>
         </form> 
+    </li>
     {% empty %}
     <p>Nenhum serviço disponível no momento.</p>
     {% endfor %}
