@@ -1,13 +1,17 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import AlunoSignUpForm, EmpresaSignUpForm, AlunoProfileForm, EmpresaProfileForm, ServicoForm
-from .models import Servico, Empresa
+from .models import Servico, Empresa, Aluno, Candidatura
+from django.utils import timezone
+
 
 def home(request):
     return render(request, 'home.html')
 
+
 def signup(request):
     return render(request, 'signup.html')
+
 
 def aluno_signup(request):
     if request.method == 'POST':
@@ -24,6 +28,7 @@ def aluno_signup(request):
         profile_form = AlunoProfileForm()
     return render(request, 'aluno_signup.html', {'user_form': user_form, 'profile_form': profile_form})
 
+
 def empresa_signup(request):
     if request.method == 'POST':
         user_form = EmpresaSignUpForm(request.POST)
@@ -39,12 +44,24 @@ def empresa_signup(request):
         profile_form = EmpresaProfileForm()
     return render(request, 'empresa_signup.html', {'user_form': user_form, 'profile_form': profile_form})
 
+
 @login_required
 def servicos(request):
     if not request.user.is_student:
         return redirect('home')
+
     servicos = Servico.objects.all()
-    return render(request, 'meu_app/servicos.html', {'servicos': servicos})
+    user = request.user
+    servicos_info = []
+    for servico in servicos:
+        ja_candidatado = servico.candidatura_set.filter(aluno=user.aluno).exists()
+        servicos_info.append({
+            'servico': servico,
+            'ja_candidatado': ja_candidatado
+        })
+
+    return render(request, 'meu_app/servicos.html', {'servicos_info': servicos_info})
+
 
 @login_required
 def criar_servico(request):
@@ -54,7 +71,7 @@ def criar_servico(request):
         form = ServicoForm(request.POST)
         if form.is_valid():
             servico = form.save(commit=False)
-            servico.empresa = request.user.empresa 
+            servico.empresa = request.user.empresa
             servico.save()
             return redirect('servicosDaEmpresa')
     else:
@@ -66,6 +83,7 @@ def listar_servicos(request):
     servicos = Servico.objects.all()
     return render(request, 'meu_app/servicos.html', {'servicos': servicos})
 
+
 @login_required
 def profile_redirect(request):
     if request.user.is_company:
@@ -74,11 +92,60 @@ def profile_redirect(request):
         return redirect('servicos')
     return redirect('home')
 
+
+@login_required
 def servicosDaEmpresa(request):
-    if request.user.is_authenticated and request.user.is_company:
-        empresa = Empresa.objects.get(user=request.user) 
+    if request.user.is_company:
+        empresa = Empresa.objects.get(user=request.user)
         servicos = Servico.objects.filter(empresa=empresa)
     else:
-        servicos = Servico.objects.none() 
-
+        servicos = Servico.objects.none()
     return render(request, 'servicosDaEmpresa.html', {'servicos': servicos})
+
+
+@login_required
+def candidatar_servico(request, servico_id):
+    if not request.user.is_student:
+        return redirect('home')
+
+    servico = get_object_or_404(Servico, id=servico_id)
+    aluno = Aluno.objects.get(user=request.user)
+
+    if Candidatura.objects.filter(aluno=aluno, servico=servico).exists():
+        return redirect('servicos')
+
+    if request.method == 'POST':
+        mensagem = request.POST.get('mensagem', '')
+        candidatura = Candidatura.objects.create(
+            aluno=aluno,
+            servico=servico,
+            mensagem=mensagem,
+            data_candidatura=timezone.now()
+        )
+        return redirect('servicos')
+
+    return render(request, 'meu_app/servicos.html', {'servico': servico})
+
+
+@login_required
+def listar_candidatos(request, servico_id):
+    if not request.user.is_company:
+        return redirect('home')
+    servico = get_object_or_404(Servico, id=servico_id, empresa=request.user.empresa)
+    candidaturas = Candidatura.objects.filter(servico=servico).select_related('aluno__user')
+    return render(request, 'meu_app/listar_candidatos.html', {'servico': servico, 'candidaturas': candidaturas})
+
+
+@login_required
+def visualizar_candidaturas(request, servico_id):
+    if not request.user.is_company:
+        return redirect('home')
+    servico = get_object_or_404(Servico, id=servico_id, empresa=request.user.empresa)
+    candidaturas = Candidatura.objects.filter(servico=servico)
+    return render(request, 'meu_app/visualizar_candidaturas.html', {'servico': servico, 'candidaturas': candidaturas})
+
+
+@login_required
+def perfil_aluno(request, aluno_id):
+    aluno = get_object_or_404(Aluno, id=aluno_id)
+    return render(request, 'meu_app/perfil_aluno.html', {'aluno': aluno})

@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
@@ -12,7 +13,7 @@ class User(AbstractUser):
         help_text='The groups this user belongs to.',
         verbose_name='groups'
     )
-    
+
     user_permissions = models.ManyToManyField(
         'auth.Permission',
         related_name='meu_app_users_permissions',
@@ -48,3 +49,29 @@ class Servico(models.Model):
 
     def __str__(self):
         return self.titulo
+
+from django.db import models
+
+class Candidatura(models.Model):
+    aluno = models.ForeignKey(Aluno, on_delete=models.CASCADE)
+    servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
+    mensagem = models.TextField(blank=True, null=True)
+    data_candidatura = models.DateTimeField(auto_now_add=True)  # Defina o campo data_candidatura
+
+    def __str__(self):
+        return f'Candidatura de {self.aluno} para {self.servico}'
+
+class AlunoForm(forms.ModelForm):
+    class Meta:
+        model = Aluno
+        fields = [
+            'cpf',
+            'nome_completo',
+            'faculdade',
+            'curso_graduacao',
+            'ano_ingresso',
+            'telefone',
+            'experiencias',
+            'foto_perfil'
+        ]
+

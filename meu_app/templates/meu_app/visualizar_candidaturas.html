@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Candidaturas para o serviço: {{ servico.titulo }}{% endblock %}
+
+{% block content %}
+    <h2>Candidaturas para o serviço: {{ servico.titulo }}</h2>
+    <ul>
+        {% for candidatura in candidaturas %}
+        <li>
+            <p><strong>Aluno:</strong> {{ candidatura.aluno.user.username }}</p>
+            <p><strong>Nome completo:</strong> {{ candidatura.aluno.nome_completo }}</p>
+            <p><strong>Faculdade:</strong> {{ candidatura.aluno.faculdade }}</p>
+            <p><strong>Curso:</strong> {{ candidatura.aluno.curso_graduacao }}</p>
+            <p><strong>Ano de ingresso:</strong> {{ candidatura.aluno.ano_ingresso }}</p>
+            <p><strong>Experiências:</strong> {{ candidatura.aluno.experiencias }}</p>
+            <p><strong>Mensagem:</strong> {{ candidatura.mensagem }}</p>
+            <p><strong>Data de Candidatura:</strong> {{ candidatura.data_candidatura }}</p>
+        </li>
+        {% empty %}
+        <p>Nenhuma candidatura encontrada para este serviço.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -5,15 +5,24 @@
 {% block content %}
     <h2>Serviços Disponíveis</h2>
     <ul>
-        {% for servico in servicos %}
+        {% for servico_info in servicos_info %}
         <li>
-            <h3>{{ servico.titulo }}</h3>
-            <p><strong>Descrição:</strong> {{ servico.descricao }}</p>
-            <p><strong>Prazo:</strong> {{ servico.prazo }}</p>
-            <p><strong>Preço:</strong> R$ {{ servico.preco }}</p>
+            <h3>{{ servico_info.servico.titulo }}</h3>
+            <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
+            <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
+            <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
+            {% if servico_info.ja_candidatado %}
+                <button disabled>Candidatura Feita</button>
+            {% else %}
+                <form action="{% url 'candidatar_servico' servico_info.servico.id %}" method="post">
+                    {% csrf_token %}
+                    <textarea name="mensagem" placeholder="Mensagem opcional"></textarea>
+                    <button type="submit">Candidatar-se</button>
+                </form>
+            {% endif %}
         </li>
         {% empty %}
         <p>Nenhum serviço disponível no momento.</p>
         {% endfor %}
     </ul>
-{% endblock%}
+{% endblock %}
