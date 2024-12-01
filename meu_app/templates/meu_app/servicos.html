@@ -10,7 +10,7 @@
 </nav>
 
 <div class="filter-container">
-    <h2>Pesquisa e filtragem de serviços</h2>
+    <h2>Pesquisa e Filtragem de Serviços</h2>
     <form method="get" action="{% url 'servicos' %}">
         <input type="text" name="q" placeholder="Buscar por título ou descrição" value="{{ request.GET.q }}">
         <input type="number" name="preco_min" placeholder="Preço mínimo" value="{{ request.GET.preco_min }}">
@@ -23,31 +23,27 @@
     </form>
 </div>
 
-<h2>Serviços Disponíveis</h2>
+<h2 class="section-title">Serviços Disponíveis</h2>
 
-<body>
-    
+<div class="servicos-list">
     {% for servico_info in servicos_info %}
     <div class="servicos-container">
-
         <h3>{{ servico_info.servico.titulo }}</h3>
-        <p><strong>Descrição:</strong></p>
         <p><strong>Descrição:</strong> {{ servico_info.servico.descricao }}</p>
-        <br>
         <p><strong>Prazo:</strong> {{ servico_info.servico.prazo }}</p>
         <p><strong>Preço:</strong> R$ {{ servico_info.servico.preco }}</p>
         {% if servico_info.ja_candidatado %}
-            <button disabled>Candidatura Feita</button>
+            <button disabled class="disabled-button">Candidatura Feita</button>
         {% else %}
             <form action="{% url 'candidatar_servico' servico_info.servico.id %}" method="post">
                 {% csrf_token %}
-                <textarea name="mensagem" placeholder="Mensagem opcional"></textarea>
-                <button type="submit">Candidatar-se</button>
+                <textarea name="mensagem" placeholder="Mensagem opcional" class="mensagem-textarea"></textarea>
+                <button type="submit" class="primary-button">Candidatar-se</button>
             </form>
         {% endif %}
     </div>
     {% empty %}
-    <p>Nenhum serviço disponível no momento.</p>
+    <p class="no-results">Nenhum serviço disponível no momento.</p>
     {% endfor %}
-</body>
+</div>
 {% endblock %}

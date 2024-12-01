@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Meus Serviços{% endblock %}
+
+{% block content %}
+    <h2>Meus Serviços</h2>
+    <ul>
+        {% for acordo in acordos %}
+        <li>
+            <p><strong>Serviço:</strong> {{ acordo.servico.titulo }}</p>
+            <p><strong>Empresa:</strong> {{ acordo.empresa.nome }}</p>
+            <p><strong>Data do Acordo:</strong> {{ acordo.data_acordo }}</p>
+        </li>
+        {% empty %}
+        <p>Você ainda não tem serviços atribuídos.</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
