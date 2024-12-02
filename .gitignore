@@ -1,0 +1,9 @@
+
+staticfiles/
+
+
+.env
+
+
+.DS_Store
+Thumbs.db
